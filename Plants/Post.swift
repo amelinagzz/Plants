@@ -27,11 +27,11 @@ class Post: NSObject, NSCoding {
         return _postDesc
     }
     
-    init(imagePath: String, title: String, description: String) {
+    init(imagePath: String, title: String, desc: String) {
         
         self._imagePath = imagePath
         self._title = title
-        self._postDesc = description
+        self._postDesc = desc
         
     }
     
@@ -49,6 +49,6 @@ class Post: NSObject, NSCoding {
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self._imagePath, forKey: "imagePath")
         aCoder.encodeObject(self._title, forKey: "title")
-        aCoder.encodeObject(self._postDesc, forKey: "descriprion")
+        aCoder.encodeObject(self._postDesc, forKey: "description")
     }
 }

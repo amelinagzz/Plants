@@ -17,8 +17,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        
        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onPostsLoaded:", name: "postsLoaded", object: nil)
+        DataService.instance.loadPosts()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,10 +38,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let post = DataService.instance.loadedPosts[indexPath.row]
         if let cell = tableView.dequeueReusableCellWithIdentifier("PostCell") as? PostCell {
             cell.configureCell(post)
+            cell.selectionStyle = .None
             return cell
         }else {
             let cell = PostCell()
             cell.configureCell(post)
+            cell.selectionStyle = .None
             return cell
         }
     }
@@ -53,6 +58,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func onPostsLoaded(notif: AnyObject) {
         tableView.reloadData()
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if(editingStyle == .Delete) {
+            
+        }
     }
 }
 

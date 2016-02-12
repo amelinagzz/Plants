@@ -25,6 +25,7 @@ class DataService {
         
         let postsData = NSKeyedArchiver.archivedDataWithRootObject(_loadedPosts)
         NSUserDefaults.standardUserDefaults().setObject(postsData, forKey: KEY_POSTS)
+        NSUserDefaults.standardUserDefaults().synchronize()
         
     }
     
@@ -40,12 +41,18 @@ class DataService {
         
     }
     
-    func saveImageAndCreatePath(image: UIImage) {
-        
+    func saveImageAndCreatePath(image: UIImage) -> String {
+        let imageData = UIImagePNGRepresentation(image)
+        let imagePath = "image\(NSDate.timeIntervalSinceReferenceDate()).png"
+        let fullPath = documentsPathForFileName(imagePath)
+        imageData?.writeToFile(fullPath, atomically: true)
+        return imagePath
     }
     
-    func imageForPath(path: String) {
-        
+    func imageForPath(path: String) -> UIImage?{
+        let fullPath = documentsPathForFileName(path)
+        let image = UIImage(named: fullPath)
+        return image
     }
     
     func addPost(post: Post) {
@@ -56,7 +63,7 @@ class DataService {
     }
     
     func documentsPathForFileName(name: String) -> String {
-        let path = NSSearchPathForDirectoriesInDomains(.DocumentationDirectory, .UserDomainMask, true)
+        let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
         let fullPath = path [0] as NSString
         return fullPath.stringByAppendingPathComponent(name)
     }
